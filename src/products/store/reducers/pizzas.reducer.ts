@@ -16,11 +16,14 @@ export const initialState: PizzaState = {
 export function reducer(state: PizzaState = initialState, action: fromPizzas.PizzasAction): PizzaState {
 
     switch (action.type) {
+
         case fromPizzas.LOAD_PIZZAS:
             return { ...state, loading: true };
+
         case fromPizzas.LOAD_PIZZAS_FAIL:
             return { ...state, loading: false, loaded: false };
-        case fromPizzas.LOAD_PIZZAS_SUCCESS:
+
+        case fromPizzas.LOAD_PIZZAS_SUCCESS: {
 
             const pizzas = (<fromPizzas.LoadPizzasSuccess>action).payload;
             const entities = pizzas.reduce((entities: { [id: number]: Pizza }, pizza: Pizza) => {
@@ -36,6 +39,18 @@ export function reducer(state: PizzaState = initialState, action: fromPizzas.Piz
                 loaded: true,
                 entities
             };
+        }
+
+        case fromPizzas.CREATE_PIZZA_SUCCESS: 
+        case fromPizzas.UPDATE_PIZZA_SUCCESS: {
+            const pizza: Pizza = (<fromPizzas.CreatePizzaSuccess | fromPizzas.UpdatePizzaSuccess>action).payload;
+            const entities = { ...state.entities, [pizza.id]: pizza };
+
+            return {
+                ...state,
+                entities
+            };
+        }
     }
 
     return state;
