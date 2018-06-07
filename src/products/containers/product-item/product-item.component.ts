@@ -16,13 +16,16 @@ import * as fromStore from '../../store';
 export class ProductItemComponent implements OnInit {
   pizza$: Observable<Pizza>;
   visualise: Pizza;
-  toppings: Topping[];
+  toppings$: Observable<Topping[]>;
 
   constructor(
     private store: Store<fromStore.ProductsState>) {}
 
   ngOnInit() {
+    this.store.dispatch(new fromStore.LoadToppings());
     this.pizza$ = this.store.select(fromStore.getSelectedPizza);
+    // To be implemented
+    // this.toppings$ = this.store.select(fromStore.getAllToppings);
   }
 
   onSelect(event: number[]) {
