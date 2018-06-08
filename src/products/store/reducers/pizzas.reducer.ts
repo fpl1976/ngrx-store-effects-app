@@ -51,6 +51,16 @@ export function reducer(state: PizzaState = initialState, action: fromPizzas.Piz
                 entities
             };
         }
+
+        case fromPizzas.DELETE_PIZZA_SUCCESS: {
+            const pizza: Pizza = (<fromPizzas.DeletePizzaSuccess>action).payload;
+            const { [pizza.id] : removed, ...entities } = state.entities;
+
+            return {
+                ...state,
+                entities
+            }
+        }
     }
 
     return state;
